@@ -1,0 +1,12 @@
+body{
+  background-color: #1b2020;
+}
+
+h1{
+  color: aliceblue;
+}
+
+.card:hover{
+  transform: scale(1.2);
+  margin-top: 70px;
+}
