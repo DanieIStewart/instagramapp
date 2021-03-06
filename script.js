@@ -2,6 +2,7 @@
 const userProfile = []; 
 const hashtags = [];
 
+// create cards
 const makeCards = (user) => {
   console.log(user)
   const { full_name, profile_pic_url_hd, biography, is_private, username } = user 
@@ -30,31 +31,35 @@ const makeCards = (user) => {
   </div>
   `
 }
+// convert timestamp to readable format
+const convertTimestamp = (time) => {
+  const  theDate = new Date( time * 1000);
+  const dateString = theDate.toGMTString();
+  return dateString
+}
+
 const makeHashTagsCards = (hashtag) => {
- const media = hashtag.edge_hashtag_to_media
+ const media = hashtag.edge_hashtag_to_media;
  const hashTagArea = document.querySelector('#hastags');
- const { edges } = media
-//  hashtags.push(edges)
+ const { edges } = media;
+  console.log(edges)
  edges.map((tag) => {
-   console.log(tag)
   let div = document.createElement("div");  
   div.innerHTML= `
-  <div class="card" style="width: 18rem;">
-      <img src="${tag.node.thumbnail_src}" class="card-img-top" alt="...">
+    <div class="card" style="width: 18rem;">
+      <img src="${tag.node.thumbnail_src}" class="card-img-top" alt="${tag.node.accessibility_caption}">
     <div class="card-body">
-      <h5 class="card-title">hastag</h5>
       <p class="card-text">
-        example
+       ${tag.node.accessibility_caption.slice(0, 50)}
       </p>
     </div>
     <ul class="list-group list-group-flush">
-      <li class="list-group-item">Followers exmaple</li>
+      <li class="list-group-item">Likes: ${tag.node.edge_liked_by.count}</li>
+      <li class="list-group-item">${convertTimestamp(tag.node.taken_at_timestamp)}</li>
     </ul>
-    <div class="card-body">
-      <a href="" class="card-link">Visit Profile</a>
-    </div>
-  </div>
+   </div>
   `
+
   document.querySelector('#hastags').appendChild(div)
 
   // document.querySelector('#hastags').innerHTML= `
@@ -105,6 +110,8 @@ async function getHashtag(tag) {
    console.log(error)
   }
  }
+
+
 
   document.getElementById("instagram-username").addEventListener('change', (e) => {
     getFollowers(e.target.value)
